@@ -1,0 +1,10 @@
+{% for cat in categorys %}
+{% if cat.parent == None %}
+<div class="row">
+    <div class="col-6">
+        <a style="text-decoration: none;color: dimgray;" href="{% url 'blog:category' cat.slug %}">دسته بندی :
+            {{cat.title}}</a>
+    </div>
+</div>
+{% endif %}
+{% endfor %}

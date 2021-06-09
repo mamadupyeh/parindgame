@@ -1,0 +1,127 @@
+{% load base_tags %}
+{% load static %}
+{% load gravatar %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>دسته بندی ها</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'registration/adminlte/plugins/fontawesome-free/css/all.min.css' %}">
+    <link rel="stylesheet"
+        href="{% static 'registration/adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+    <link rel="stylesheet"
+        href="{% static 'registration/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'registration/adminlte/plugins/jqvmap/jqvmap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'registration/adminlte/dist/css/adminlte.min.css' %}">
+    <link rel="stylesheet"
+        href="{% static 'registration/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+    <link rel="stylesheet" href="{% static 'registration/adminlte/plugins/daterangepicker/daterangepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'registration/adminlte/plugins/summernote/summernote-bs4.css' %}">
+    <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'registration/adminlte/dist/css/custom.css' %}">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{% static 'blog/css/styles.css' %}" rel="stylesheet" />
+
+
+    <style>
+        .asa {
+            text-decoration: none !important;
+            color: rgba(122, 255, 235, 0.661) !important;
+        }
+
+        .rrb {
+            position: relative !important;
+            padding: .75rem 1.25rem !important;
+            margin-bottom: 1rem !important;
+            border: 1px solid transparent !important;
+            border-radius: .25rem !important;
+            color: #004085 !important;
+            background-color: #cce5ff !important;
+            border-color: #b8daff !important;
+            font-weight: 800 !important;
+            font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+        }
+
+        .flo {
+            float: right !important;
+        }
+
+        .flor {
+            float: left !important;
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top flor " id="mainNav">
+        <div class="container">
+            <div class="navbar-brand js-scroll-trigger fars " style="font-size:15px !important;"
+                href="{% url 'blog:home' %}">
+                {% if not user.is_authenticated %}
+                <a class="asa flor" href="{% url 'login' %}">ورود</a>/<a class="asa" href="{% url 'register' %}">ثبت
+                    نام</a>
+                {% else %}
+                <a href="{% url 'account:home' %}">
+                    <div class="image">
+                        <img src="{% gravatar_url user.email 150 %}" style="border-radius: 77px;    width: 56px;"
+                            class="img-circle elevation-2" alt="{{user.email}}">
+                    </div>
+                </a>
+                {% endif %}
+            </div>
+            <button class="navbar-toggler navbar-toggler-right fars" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
+                منو
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse fars" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger fars"
+                            href="{% url 'blog:home' %}">خانه</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger fars"
+                            href="{% url 'blog:categorylist' %}">دسته بندی ها</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger fars" href="#about-team">درباره</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br>
+    <br>
+
+    <br>
+    <br>
+    <br>
+
+    <center class="mt-6">
+        <div class="col-12">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="col-md-12">
+                        <div class="card card-primary" style="margin-top: 10px;">
+                            <div class="card-header">
+                                <h3 class="card-title mb-0 float-left flo">دسته بندی ها</h3>
+                            </div>
+                            <div class="card-body">
+                                {% category_lists %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </center>
+</body>
+
+</html>

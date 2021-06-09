@@ -1,0 +1,19 @@
+<div class="card my-4">
+    <h5 class="card-header fars">{{title}}</h5>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-6">
+
+
+                {% for a in articles %}
+                <div>
+                    <a style="font-size: 20px;  color: rgb(102, 99, 99) !important;" class="asa fars"
+                        href="{% url 'blog:detail' a.slug %}">{{a.title|truncatewords:4}}</a>
+                </div>
+
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</div>

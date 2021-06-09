@@ -1,0 +1,252 @@
+{% load static %}
+{% load humanize %}
+{% load base_tags %}
+{% load gravatar %}
+{% load ratings %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>
+        Parind Game | {% block title %}News Game{% endblock %}
+    </title>
+    <link rel="icon" type="image/x-icon" href="{% static 'blog/assets/img/favicon.ico' %}" />
+    <!-- Font Awesome icons (free version)-->
+    <!-- <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script> -->
+    <!-- Google fonts-->
+    <!-- <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" /> -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+
+    <link href="{% static 'blog/css/styles.css' %}" rel="stylesheet" />
+
+
+    <style>
+        .asa {
+            text-decoration: none !important;
+            color: rgba(122, 255, 235, 0.661) !important;
+        }
+
+        .rrb {
+            position: relative !important;
+            padding: .75rem 1.25rem !important;
+            margin-bottom: 1rem !important;
+            border: 1px solid transparent !important;
+            border-radius: .25rem !important;
+            color: #004085 !important;
+            background-color: #cce5ff !important;
+            border-color: #b8daff !important;
+            font-weight: 800 !important;
+            font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+        }
+
+        .rrbs {
+            position: relative !important;
+            margin-bottom: 1rem !important;
+            border: 1px solid transparent !important;
+            border-radius: .25rem !important;
+            font-weight: 800 !important;
+            width: 100%;
+            height: 70px;
+        }
+
+    </style>
+</head>
+
+<body id="page-top">
+
+    {% block main %}
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+        <div class="container">
+            <div class="navbar-brand js-scroll-trigger fars " style="font-size:15px !important;"
+                href="{% url 'blog:home' %}">
+                {% if not user.is_authenticated %}
+                <a class="asa" href="{% url 'login' %}">ورود</a>/<a class="asa" href="{% url 'register' %}">ثبت نام</a>
+                {% else %}
+                <a href="{% url 'account:home' %}">
+                    <div class="image">
+                        <img src="{% gravatar_url user.email 150 %}" style="border-radius: 77px;    width: 56px;"
+                            class="img-circle elevation-2" alt="{{user.email}}">
+                    </div>
+                </a>
+                {% endif %}
+            </div>
+            <button class="navbar-toggler navbar-toggler-right fars" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
+                منو
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse fars" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="a nav-link js-scroll-trigger fars"
+                            href="{% url 'blog:home' %}">خانه</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger fars"
+                            href="{% url 'blog:categorylist' %}">دسته بندی ها</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger fars" href="#about-team">درباره</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Masthead-->
+    <header class="masthead">
+        <div class="container d-flex h-100 align-items-center">
+            <div class="mx-auto text-center">
+                <h1 class="mx-auto my-0 text-uppercase">parind game</h1>
+                <h2 class="text-white-50 mx-auto mt-2 mb-5 fars center">سایت رسمی باریند گیم</h2>
+                <h2 class="text-white-50 mx-auto mt-2 mb-5 fars">در این سایت میتوانید مقالات , آموزشات و اخبار گیم را
+                    رایگان
+                    دنبال کنید
+                </h2>
+
+
+                {% category_navbar %}
+
+
+
+            </div>
+        </div>
+    </header>
+    {% endblock %}
+
+    <section class="projects-section bg-light" id="posts" style="padding-top: 30px;">
+        <div class="container">
+            <!-- Featured Project Row-->
+            {% for ads in article_ads %}
+            <a href="#">
+                <img src="{{ads.thumbnail.url}}" alt="" class="rrbs">
+            </a>
+            {% endfor %}
+            {% block header %}{% endblock %}
+            {% for article in object_list %}
+            <div class="row justify-content-center no-gutters mb-5 mb-lg-0 fars mt-3">
+                <div class="col-lg-6"><img style="width: 558px!important;height: 420px !important;" class="img-fluid"
+                        src="{{article.thumbnail.url}}" alt="" /></div>
+                <div class="col-lg-6">
+                    <div class="bg-black text-center h-100 project">
+                        <div class="d-flex h-100">
+                            <div class="project-text w-100 my-auto text-center text-lg-left">
+                                <a href="{% url 'blog:detail' article.slug %}" class="fars">
+                                    <h4 class="text-white">{{article.title}}</h4>
+
+                                    <!--  -->
+                                    <p class="mb-0 text-white-50 fars farses">
+                                        {{article.description|striptags|truncatewords:13}}
+                                    </p>
+                                    <hr class="d-none d-lg-block mb-0 ml-0" />
+                                </a>
+                                <p style="color: rgb(255, 227, 227);" class="post-meta">نوشته شده توسط
+                                    <a class="asa"
+                                        href="{% url 'blog:author' article.author %}">{{article.author.get_full_name}}</a>
+                                    {{article.publish|naturaltime}}</p>
+                                <div style="color: aliceblue;" class="fars">بازدید ها:{{article.hits.count}}</div>
+                                <!-- <div>{% ratings article %}</div> -->
+                                {% for cat in article.category.active %}
+                                <a class="asa" href="{% url 'blog:category' cat.slug %}">#{{cat.title}}</a>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %} <p>متسفانه محتوایی برای نمایش وجود ندارد</p>
+            {% endfor %}
+            {% if is_paginated %}
+            <div class="clearfix pager-botton">
+                {% if page_obj.has_previous %}
+                <a class="btn btn-primary ml-3 float-right mt-4" href="{% block previous_page_url %}{% endblock %}">
+                    بست های جدید &rarr;</a>
+                {% endif %}
+
+                {% if page_obj.has_next %}
+                <a class="btn btn-primary float-left mt-4" href="{% block next_page_url %}{% endblock %}">&larr;بست
+                    های قدیمی</a>
+                {% endif %}
+            </div>
+            {% endif %}
+            <!-- Project Two Row-->
+
+        </div>
+    </section>
+    <!-- Signup-->
+    <section class="signup-section" id="signup">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto text-center">
+                    <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
+                    <h2 class="text-white mb-5 fars">از اخبار سایت مطلع شوید</h2>
+                    <form class="form-inline d-flex">
+                        <input class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0 fars farses id=" inputEmail=""
+                            type="email" placeholder="ایمیل خود را وارد کنید..." />
+                        <button class="btn btn-primary mx-auto fars" type="submit">دنبال کردن</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Contact-->
+    <section id="about-team" class="contact-section bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="card py-4 h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-map-marked-alt text-primary mb-2"></i>
+                            <h4 class="text-uppercase m-0 fars">ادرس</h4>
+                            <hr class="my-4" />
+                            <div class="small text-black-50">IRAN, KHOZESTAN, AHWAZ</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="card py-4 h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-envelope text-primary mb-2"></i>
+                            <h4 class="text-uppercase m-0 fars">ایمیل</h4>
+                            <hr class="my-4" />
+                            <div class="small text-black-50"><a href="#!">BINAMSELERIMIR@GMAIL.COM</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="card py-4 h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-mobile-alt text-primary mb-2"></i>
+                            <h4 class="text-uppercase m-0 fars">تلفن</h4>
+                            <hr class="my-4" />
+                            <div class="small text-black-50">09379831143</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="social d-flex justify-content-center">
+                <a class="mx-2" href="#!"><i class="fab fa-twitter"></i></a>
+                <a class="mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+                <a class="mx-2" href="#!"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+    </section>
+    <!-- Footer-->
+    <footer class="footer bg-black small text-center text-white-50">
+        <div class="container">Copyright © Your Website 2021</div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Third party plugin JS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="{% static 'blog/js/scripts.js' %}"></script>
+</body>
+
+</html>

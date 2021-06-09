@@ -1,0 +1,253 @@
+{% load static %}
+{% load humanize %}
+{% load comment_tags %}
+{% load ratings %}
+{% load gravatar %}
+{% load base_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Parind Game | {% block title %}{{object.title}}{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="{% static 'blog/css/styles.css' %}">
+    <link href="{% static 'blog/vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'blog/css/blog-post.css' %}" rel="stylesheet">
+    <style>
+        .asa {
+            text-decoration: none !important;
+            color: rgba(255, 255, 255, 0.661) !important;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+        <div class="container">
+            {% if not user.is_authenticated %}
+            <div class="navbar-brand js-scroll-trigger fars " style="font-size:15px !important;" href="#page-top">
+                <a class="asa" href="{% url 'login' %}">ورود</a>/<a class="asa" href="{% url 'register' %}">ثبت نام</a>
+            </div>
+            {% else %}
+            <a href="{% url 'account:home' %}">
+                <div class="image">
+                    <img src="{% gravatar_url user.email 150 %}" class="img-circle elevation-2"
+                        style="border-radius: 77px;    width: 56px;" alt="{{user.email}}">
+                </div>
+            </a>
+            {% endif %}
+            <button class="navbar-toggler navbar-toggler-right fars" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
+                منو
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse fars" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger fars"
+                            href="{% url 'blog:home' %}">خانه</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger fars"
+                            href="{% url 'blog:categorylist' %}">دسته بندی ها</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger fars" href="#about-team">درباره</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+
+    <div class="container farses">
+
+        <div class="row">
+
+
+            <!-- Post Content Column -->
+            <div class="col-lg-8">
+
+                <!-- Title -->
+                <h1 class="mt-4 fars">{{object.title}}</h1>
+
+                <!-- Author -->
+                <p class="lead fars">
+                    نوشته شده توسط
+                    <a style="font-family: tahoma;text-decoration: none;"
+                        href="{% url 'blog:author' article.author %}">{{article.author.get_full_name}}</a>
+                </p>
+
+                <hr>
+
+                <!-- Date/Time -->
+                <p style="color: rgb(150, 135, 135);" class="post-meta fars">نوشته شده در
+
+                    <time> {{object.publish|naturaltime}}</time></p>
+                <div style="color: rgb(150, 135, 135);" class="fars">بازدید ها:{{article.hits.count}}</div>
+                <!-- <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-10 mx-auto">
+                            <div class="site-heading">
+                                <div>{% ratings object %}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <hr>
+
+                <!-- Preview Image -->
+                <img style="width: 900px!important;height: 300px !important;" class="img-fluid rounded"
+                    src="{{article.thumbnail.url}}" alt="">
+
+                <hr>
+
+                <!-- Post Content -->
+                <p style="color: rgb(39, 39, 39) !important;" class="mb-0 text-white-50 fars farses">
+                    {{object.description|safe}}
+                </p>
+                <hr>
+
+                <!-- Comments Form -->
+
+                {% render_comments object request %}
+                {% include_bootstrap %}
+
+            </div>
+
+            <!-- Sidebar Widgets Column -->
+            <div class="col-md-4">
+
+                <!-- Search Widget -->
+
+
+                <!-- <div class="card my-4">
+                    <h5 class="card-header">اطلاعات مقاله</h5>
+                    <div class="card-body">
+                        <div class="input-group">
+
+                        </div>
+                    </div>
+                </div> -->
+                <!-- Categories Widget -->
+                <div class="card my-4">
+                    <h5 class="card-header fars">دسته بندی</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <ul class="list-unstyled mb-0">
+                                    {% for cat in object.category.active %}
+                                    <li>
+                                        <a style="color: rgb(102, 99, 99) !important;" class="asa fars"
+                                            href="{% url 'blog:category' cat.slug %}">{{cat.title}}</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% popular_articles %}
+                {% hot_articles %}
+
+                <!-- Side Widget -->
+
+
+            </div>
+
+        </div>
+        <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <section class="signup-section" id="signup">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto text-center">
+                    <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
+                    <h2 class="text-white mb-5 fars">از اخبار سایت مطلع شوید</h2>
+                    <form class="form-inline d-flex">
+                        <input class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0 fars farses id=" inputEmail=""
+                            type="email" placeholder="ایمیل خود را وارد کنید..." />
+                        <button class="btn btn-primary mx-auto fars" type="submit"
+                            style="color: primary !important;">دنبال
+                            کردن</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Contact-->
+    <section id="about-team" class="contact-section bg-black">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="card py-4 h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-map-marked-alt text-primary mb-2"></i>
+                            <h4 class="text-uppercase m-0 fars">ادرس</h4>
+                            <hr class="my-4" />
+                            <div class="small text-black-50">IRAN, KHOZESTAN, AHWAZ</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="card py-4 h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-envelope text-primary mb-2"></i>
+                            <h4 class="text-uppercase m-0 fars">ایمیل</h4>
+                            <hr class="my-4" />
+                            <div class="small text-black-50"><a href="#!">BINAMSELERIMIR@GMAIL.COM</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="card py-4 h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-mobile-alt text-primary mb-2"></i>
+                            <h4 class="text-uppercase m-0 fars">تلفن</h4>
+                            <hr class="my-4" />
+                            <div class="small text-black-50">09379831143</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="social d-flex justify-content-center">
+                <a class="mx-2" href="#!"><i class="fab fa-twitter"></i></a>
+                <a class="mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+                <a class="mx-2" href="#!"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+    </section>
+    <!-- Footer-->
+    <footer class="footer bg-black small text-center text-white-50">
+        <div class="container">Copyright © Your Website 2021</div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Third party plugin JS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="{% static 'blog/js/scripts.js' %}"></script>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'blog/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'blog/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+
+</body>
+
+</html>
